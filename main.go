@@ -9,7 +9,7 @@ import (
 
 func main() {
 	//* Cargar credenciales
-	credentials := scraper.LoadCredentialsFromFile("credentials.txt")
+	credentials := scraper.LoadCredentialsFromFile("users.txt", "password.txt")
 
 	//* Crear y configurar el colector
 	c := scraper.NewCollector(credentials)
@@ -18,7 +18,7 @@ func main() {
 	scraper.CrawlAndSubmit(c, credentials)
 
 	//* URL de inicio
-	startURL := "https://example.com"
+	startURL := "http://127.0.0.1:5000"
 	fmt.Printf("Iniciando bot en: %s\n", startURL)
 
 	//* Comienza la visita

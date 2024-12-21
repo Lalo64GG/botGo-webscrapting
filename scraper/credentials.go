@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"strings"
 	"fmt"
 )
 
@@ -14,29 +13,38 @@ type Credential struct {
 }
 
 //* Cargar las credenciales desde un archivo
-func LoadCredentialsFromFile(filename string) []Credential {
+func LoadCredentialsFromFile(userFile, passwordFile string) []Credential {
 	var credentials []Credential
 
-	file, err := os.Open(filename)
+	user, err := os.Open(userFile)
 	if err != nil {
-		log.Fatalf("Error al abrir el archivo: %v", err)
+		log.Fatalf("Error al abrir el archivo de usuarios: %v", err)
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
+	pass, err := os.Open(passwordFile)
+	if err != nil {
+		log.Fatalf("Error al abrir el archivo de contraseñas: %v", err)
+	}
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		parts := strings.Split(line, ":")
-		if len(parts) == 2 {
-			credentials = append(credentials, Credential{
-				Username: strings.TrimSpace(parts[0]),
-				Password: strings.TrimSpace(parts[1]),
-			})
+	defer user.Close()
+	defer pass.Close()
+
+	scannerUser := bufio.NewScanner(user)
+	scannerPass := bufio.NewScanner(pass)
+
+
+	for scannerUser.Scan() && scannerPass.Scan() { 
+		credential := Credential{
+			Username: scannerUser.Text(),
+			Password: scannerPass.Text(),
 		}
+		credentials = append(credentials, credential)
 	}
 
-	if err := scanner.Err(); err != nil {
+	if err := scannerUser.Err(); err != nil {
+		log.Fatalf("Error leyendo el archivo %v", err)
+	}
+	if err := scannerPass.Err(); err != nil {
 		log.Fatalf("Error leyendo el archivo %v", err)
 	}
 

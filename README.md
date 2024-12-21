@@ -43,10 +43,26 @@ go get -u github.com/gocolly/colly
  ## File Structure
 
 ```plaintext
-  ├── main.go                 # Entry point of the application
-├── scraper/
-│   ├── scraper.go          # Core scraping logic
-│   ├── credentials.go      # Handles credential loading and saving
-│   └── utils.go            # Helper functions
-├── credentials.txt         # Input credentials file
+botGo-webscrapting/
+├── cmd/
+│   └── main.go
+├── internal/
+│   ├── scraper/
+│   │   ├── collector.go
+│   │   ├── credentials.go
+│   │   └── utils.go
+│   ├── bruteforce/
+│   │   ├── hydra.go
+│   ├── sqlinjection/
+│   │   ├── sqlmap.go
+│   └── shared/
+│       ├── config.go
+│       └── logger.go
+├── test/
+│   └── scraper_test.go
+│   └──
+├── users.txt
+├── passwords.txt
+└── go.mod
+
 ```
